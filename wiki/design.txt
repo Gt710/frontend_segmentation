@@ -1,0 +1,870 @@
+<!-- Segmentation Result View - Recreated -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Segmentation Result View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-styles">
+    /* Custom styles for elements that need specific non-Tailwind tweaks */
+    .viewport-image {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c1c1c1; 
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8; 
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex flex-col overflow-hidden">
+<!-- BEGIN: Top Navigation -->
+<header class="bg-white border-b border-gray-200 py-3 px-6 shrink-0">
+<div class="flex items-center">
+<a class="text-blue-600 hover:text-blue-800 flex items-center font-medium" href="#">
+<svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+        Back to Patient Archive
+      </a>
+</div>
+</header>
+<!-- END: Top Navigation -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 flex p-6 gap-6 min-h-0 overflow-hidden">
+<!-- BEGIN: Left Column (Viewport & Controls) -->
+<section class="flex-1 flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm min-h-0 overflow-hidden">
+<!-- Viewport Header -->
+<div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg shrink-0">
+<h2 class="font-semibold text-gray-800">Axial View</h2>
+<span class="text-sm text-gray-500 font-mono">Scan #12 • Slice 78 / 155</span>
+</div>
+<!-- Viewport Image Area -->
+<div class="flex-1 bg-black relative min-h-0">
+<!-- Main MRI Image -->
+<img alt="Brain MRI with Segmentation Overlay" class="viewport-image" src="https://lh3.googleusercontent.com/aida/ADBb0ugHfOqDeRdkDvSfgKsoPTPmiWfErFm8Ao7gxxpRbH4ehjajgZyMADJg15jYbeASnjPt42qthnvYf25IQCDC7257YbSiSgC18EsCJ26rAp-lSvYhFMa2ObVNCXgxVYXbpWF0oQ4jOcq-42p2ssDcBpjwwAwsQ7_qTpdfc43C-1wzynpaelKjfiSj2ffsNzXamw0yT3aECdtvb_u0nlVlOiMDh7lch4kYsD6wn9K1C7W3fo11PHIabdgfOEtrbn4xF0iyUAZDGHf_tQ"/>
+</div>
+<!-- Viewport Footer & Controls -->
+<div class="px-4 py-3 border-t border-gray-200 bg-gray-50 rounded-b-lg shrink-0">
+<div class="flex justify-between text-xs text-gray-500 mb-2 font-mono">
+<span>Slice: 78</span>
+<span>Total: 155</span>
+</div>
+<!-- Slice Slider -->
+<div class="relative w-full h-2 bg-blue-100 rounded-full mb-3 cursor-pointer">
+<div class="absolute top-0 left-0 h-full bg-blue-500 rounded-full" style="width: 50%;"></div>
+<div class="absolute top-1/2 left-1/2 w-3 h-3 bg-blue-600 rounded-full -translate-y-1/2 -translate-x-1/2 border-2 border-white shadow"></div>
+</div>
+<!-- Playback Controls (Placeholder for typical viewer controls) -->
+<div class="flex justify-center space-x-4 text-gray-600">
+<button class="hover:text-blue-600 p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="hover:text-blue-600 p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="hover:text-blue-600 p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="hover:text-blue-600 p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="hover:text-blue-600 p-1">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 5l7 7-7 7M5 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</section>
+<!-- END: Left Column -->
+<!-- BEGIN: Right Sidebar -->
+<aside class="w-80 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2 min-h-0 shrink-0">
+<!-- Analysis Status Panel -->
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+<div class="px-4 py-3 border-b border-gray-100 bg-gray-50 rounded-t-lg">
+<h3 class="font-semibold text-gray-800">Analysis Status</h3>
+</div>
+<div class="p-4 text-sm text-gray-600 space-y-1">
+<p><span class="text-gray-400 mr-2">Model:</span> U-Net 3D</p>
+<p><span class="text-gray-400 mr-2">Status:</span> Completed</p>
+</div>
+</div>
+<!-- Volumetric Metrics Panel -->
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+<div class="px-4 py-3 border-b border-gray-100 bg-gray-50 rounded-t-lg">
+<h3 class="font-semibold text-gray-800">Volumetric Metrics</h3>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center bg-gray-50 border border-gray-200 p-3 rounded">
+<div class="flex items-center">
+<span class="w-1.5 h-4 bg-red-500 mr-3 rounded-sm block"></span>
+<span class="text-sm font-medium text-gray-700">Tumor Volume</span>
+</div>
+<span class="text-sm font-semibold text-gray-900 font-mono">179.08 cm³</span>
+</div>
+</div>
+</div>
+<!-- Conclusion Panel -->
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm flex-1">
+<div class="px-4 py-3 border-b border-gray-100 bg-gray-50 rounded-t-lg">
+<h3 class="font-semibold text-gray-800">Conclusion</h3>
+</div>
+<div class="p-4 text-sm text-gray-700 space-y-4">
+<p>Conclusion: Detected a large lesion with volume 179.08 cm³.</p>
+<p>Recommendation: Urgent consultation with a neurosurgeon.</p>
+</div>
+</div>
+<!-- Export Button -->
+<button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-sm transition-colors mt-auto">
+        Export Report (PDF)
+      </button>
+</aside>
+<!-- END: Right Sidebar -->
+</main>
+<!-- END: Main Content Area -->
+</body></html>
+
+<!-- File Selection Dialog - NeuroSegment AI -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSegment AI - Clinical Diagnostics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-utilities">
+    /* Custom utility classes */
+    .bg-window-bg { background-color: #f0f0f0; }
+    .bg-dialog-bg { background-color: #f3f3f3; }
+    .text-dialog-text { color: #333333; }
+    .border-dialog-border { border-color: #cccccc; }
+    .btn-primary { background-color: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }
+    .btn-secondary { background-color: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1; 
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8; 
+    }
+  </style>
+</head>
+<body class="bg-gray-50 h-screen font-sans text-gray-800 overflow-hidden relative">
+<!-- BEGIN: Background Application Context -->
+<div class="absolute inset-0 opacity-40 pointer-events-none filter blur-[2px] z-0 flex flex-col items-center pt-20">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 w-[800px] mb-8">
+<h2 class="text-xl font-bold mb-6">Patient Information</h2>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<input class="border rounded p-2" placeholder="Last Name *" type="text"/>
+<input class="border rounded p-2" placeholder="First Name *" type="text"/>
+<input class="border rounded p-2" placeholder="Date of Birth * (YYYY-MM-DD)" type="text"/>
+<input class="border rounded p-2" placeholder="Phone" type="text"/>
+</div>
+<input class="border rounded p-2 w-full" placeholder="Notes" type="text"/>
+</div>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 w-[800px]">
+<h2 class="text-xl font-bold mb-6">MRI Modalities</h2>
+<div class="space-y-4">
+<div class="bg-gray-200 border rounded p-4 flex justify-between items-center">
+<span>T1-weighted (.t1n)</span>
+<span class="text-blue-600 text-sm">Select file</span>
+</div>
+<div class="border rounded p-4 flex justify-between items-center">
+<span>T1Gd — Contrast (.t1c)</span>
+<span class="text-blue-600 text-sm">Select file</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: Background Application Context -->
+<!-- BEGIN: Modal Overlay -->
+<div class="absolute inset-0 z-40 bg-transparent flex items-start justify-start pt-[50px] pl-[10px]">
+<!-- BEGIN: File Selection Dialog -->
+<div class="bg-dialog-bg w-[650px] h-[450px] rounded shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col border border-dialog-border font-segoe-ui text-sm">
+<!-- Window Title Bar -->
+<div class="flex justify-between items-center px-3 py-2 bg-white rounded-t cursor-move">
+<span class="text-dialog-text">Select NIfTI file</span>
+<button class="text-gray-500 hover:text-red-500 p-1">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Navigation Bar -->
+<div class="flex items-center px-4 py-2 border-b border-gray-200 gap-2 bg-gray-50">
+<span class="text-gray-600">Папка:</span>
+<div class="flex-grow relative">
+<select class="w-full pl-8 pr-4 py-1 border border-gray-300 rounded bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none">
+<option>BraTS-GLI-02310-100</option>
+</select>
+<div class="absolute left-2 top-1.5 text-yellow-500">
+<svg class="h-4 w-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+</svg>
+</div>
+<div class="absolute right-2 top-1.5 text-gray-500 pointer-events-none">
+<svg class="h-4 w-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+<!-- Toolbar Icons -->
+<div class="flex gap-1 ml-2 text-gray-600">
+<button class="p-1 hover:bg-gray-200 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 hover:bg-gray-200 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 hover:bg-gray-200 rounded text-yellow-500"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path><path d="M10 9v4m-2-2h4" stroke="#fff" stroke-linecap="round" stroke-width="2"></path></svg></button>
+<button class="p-1 hover:bg-gray-200 rounded flex items-center"><svg class="w-4 h-4 text-blue-500" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg><svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-grow bg-white overflow-hidden">
+<!-- Sidebar Places -->
+<div class="w-24 border-r border-gray-200 bg-gray-50 flex flex-col py-2">
+<button class="flex flex-col items-center py-3 hover:bg-blue-50 text-blue-600 bg-blue-100">
+<svg class="w-8 h-8 mb-1 text-orange-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+<span class="text-xs">Головна</span>
+</button>
+<button class="flex flex-col items-center py-3 hover:bg-blue-50 text-gray-700">
+<svg class="w-8 h-8 mb-1 text-blue-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"></path><path clip-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" fill-rule="evenodd"></path></svg>
+<span class="text-xs text-center leading-tight mt-1">Робочий стіл</span>
+</button>
+<button class="flex flex-col items-center py-3 hover:bg-blue-50 text-gray-700">
+<svg class="w-8 h-8 mb-1 text-yellow-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+<span class="text-xs mt-1">Бібліотеки</span>
+</button>
+<button class="flex flex-col items-center py-3 hover:bg-blue-50 text-gray-700">
+<svg class="w-8 h-8 mb-1 text-blue-300" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" fill-rule="evenodd"></path></svg>
+<span class="text-xs mt-1">Цей ПК</span>
+</button>
+<button class="flex flex-col items-center py-3 hover:bg-blue-50 text-gray-700">
+<svg class="w-8 h-8 mb-1 text-blue-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" fill-rule="evenodd"></path></svg>
+<span class="text-xs mt-1">Мережа</span>
+</button>
+</div>
+<!-- File List -->
+<div class="flex-grow flex flex-col border-l border-gray-200">
+<!-- List Headers -->
+<div class="flex px-2 py-1 border-b border-gray-200 text-gray-600 bg-white">
+<div class="w-[200px] flex items-center group cursor-pointer hover:bg-blue-50">
+              Ім'я <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div class="w-[120px] border-l border-gray-200 pl-2 hover:bg-blue-50 cursor-pointer">Дата змінення</div>
+<div class="w-[120px] border-l border-gray-200 pl-2 hover:bg-blue-50 cursor-pointer">Тип</div>
+<div class="flex-grow border-l border-gray-200 pl-2 hover:bg-blue-50 cursor-pointer">Розмір</div>
+</div>
+<!-- List Items -->
+<div class="flex-grow overflow-y-auto bg-white p-1">
+<div class="flex items-center px-2 py-1 hover:bg-blue-100 cursor-pointer text-gray-800">
+<div class="w-[200px] flex items-center gap-2 truncate">
+<svg class="w-4 h-4 text-yellow-500 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path><path d="M7 11h6m-6 3h4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="truncate">BraTS-GLI-02310-100-t1c.nii</span>
+</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">09.05.2026 0:59</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">Стиснута п...</div>
+<div class="flex-grow pl-2 text-gray-500 truncate text-right pr-4"></div>
+</div>
+<div class="flex items-center px-2 py-1 bg-blue-100/50 border border-transparent hover:border-blue-300 cursor-pointer text-gray-800">
+<div class="w-[200px] flex items-center gap-2 truncate">
+<svg class="w-4 h-4 text-yellow-500 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path><path d="M7 11h6m-6 3h4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="truncate">BraTS-GLI-02310-100-t1n.nii</span>
+</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">09.05.2026 0:59</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">Стиснута п...</div>
+<div class="flex-grow pl-2 text-gray-500 truncate text-right pr-4"></div>
+</div>
+<div class="flex items-center px-2 py-1 hover:bg-blue-100 cursor-pointer text-gray-800">
+<div class="w-[200px] flex items-center gap-2 truncate">
+<svg class="w-4 h-4 text-yellow-500 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path><path d="M7 11h6m-6 3h4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="truncate">BraTS-GLI-02310-100-t2f.nii</span>
+</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">09.05.2026 0:59</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">Стиснута п...</div>
+<div class="flex-grow pl-2 text-gray-500 truncate text-right pr-4"></div>
+</div>
+<div class="flex items-center px-2 py-1 hover:bg-blue-100 cursor-pointer text-gray-800">
+<div class="w-[200px] flex items-center gap-2 truncate">
+<svg class="w-4 h-4 text-yellow-500 flex-shrink-0" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path><path d="M7 11h6m-6 3h4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="truncate">BraTS-GLI-02310-100-t2w.nii</span>
+</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">09.05.2026 0:59</div>
+<div class="w-[120px] pl-2 text-gray-500 truncate">Стиснута п...</div>
+<div class="flex-grow pl-2 text-gray-500 truncate text-right pr-4"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Area -->
+<div class="bg-dialog-bg p-3 border-t border-gray-300 flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<label class="w-20 text-right text-gray-600">Ім'я файлу:</label>
+<div class="flex-grow relative">
+<input class="w-full border border-blue-400 px-2 py-1 rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white selection:bg-blue-200" type="text" value="BraTS-GLI-02310-100-t1n.nii"/>
+<div class="absolute right-1 top-1.5 text-gray-500 pointer-events-none">
+<svg class="h-4 w-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+<button class="w-24 btn-primary rounded px-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-sm">Відкрити</button>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-20 text-right text-gray-600">Тип файлів:</label>
+<div class="flex-grow relative">
+<select class="w-full border border-gray-300 px-2 py-1 rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white appearance-none pr-8">
+<option>All Files (*.*)</option>
+</select>
+<div class="absolute right-1 top-1.5 text-gray-500 pointer-events-none">
+<svg class="h-4 w-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+<button class="w-24 btn-secondary rounded px-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-sm">Скасувати</button>
+</div>
+</div>
+</div>
+<!-- END: File Selection Dialog -->
+</div>
+<!-- END: Modal Overlay -->
+</body></html>
+
+<!-- New Patient Onboarding - NeuroSegment AI -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSegment AI - Clinical Diagnostics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-fonts">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- BEGIN: Top Bar -->
+<div class="bg-white border-b border-gray-200 text-sm py-1 px-4 flex justify-between items-center text-gray-600">
+<div class="flex items-center space-x-2">
+<svg class="w-4 h-4 text-blue-600" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" fill-rule="evenodd"></path></svg>
+<span>NeuroSegment AI - Clinical Diagnostics</span>
+</div>
+<div class="flex space-x-4">
+<button class="hover:text-gray-900">−</button>
+<button class="hover:text-gray-900">❐</button>
+<button class="hover:text-gray-900">✕</button>
+</div>
+</div>
+<!-- END: Top Bar -->
+<!-- BEGIN: MainHeader -->
+<header class="bg-white border-b border-gray-200 py-4 px-8 shadow-sm flex items-center">
+<h1 class="text-xl font-bold text-blue-800 mr-12">NeuroSegment AI</h1>
+<nav class="flex space-x-2">
+<a class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md font-medium transition-colors" href="#">Patient Archive</a>
+<a class="px-4 py-2 bg-blue-100 text-blue-800 rounded-md font-medium" href="#">Segmentation</a>
+</nav>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow flex justify-center p-8">
+<div class="w-full max-w-3xl space-y-6">
+<!-- BEGIN: Patient Information Card -->
+<section class="bg-white border border-gray-300 rounded-xl p-8 shadow-sm">
+<h2 class="text-lg font-bold text-gray-900 mb-6">Patient Information</h2>
+<!-- Patient Type Selection -->
+<div class="flex items-center space-x-8 mb-8">
+<label class="flex items-center cursor-pointer">
+<input checked="" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" name="patient_type" type="radio"/>
+<span class="ml-3 text-gray-700">New Patient</span>
+</label>
+<label class="flex items-center cursor-pointer">
+<input class="form-radio h-5 w-5 text-gray-400 border-gray-300 focus:ring-blue-500" name="patient_type" type="radio"/>
+<span class="ml-3 text-gray-700">Existing Patient</span>
+</label>
+</div>
+<!-- Form Fields -->
+<div class="grid grid-cols-2 gap-6">
+<div>
+<input class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Last Name *" type="text"/>
+</div>
+<div>
+<input class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="First Name *" type="text"/>
+</div>
+<div>
+<input class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Date of Birth * (YYYY-MM-DD)" type="text"/>
+</div>
+<div>
+<input class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Phone" type="text"/>
+</div>
+<div class="col-span-2">
+<textarea class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" placeholder="Clinical Notes" rows="3"></textarea>
+</div>
+</div>
+</section>
+<!-- END: Patient Information Card -->
+<!-- BEGIN: MRI Modalities Card -->
+<section class="bg-white border border-gray-300 rounded-xl p-8 shadow-sm">
+<h2 class="text-lg font-bold text-gray-900 mb-6">MRI Modalities</h2>
+<div class="space-y-4">
+<!-- Modality Item 1 -->
+<div class="flex justify-between items-center border border-gray-300 bg-gray-50 rounded-md p-4">
+<span class="text-gray-800 font-medium">T1-weighted (.t1n)</span>
+<button class="text-blue-600 hover:text-blue-800 font-medium text-sm">Select file</button>
+</div>
+<!-- Modality Item 2 -->
+<div class="flex justify-between items-center border border-gray-300 bg-gray-50 rounded-md p-4">
+<span class="text-gray-800 font-medium">T1Gd — Contrast (.t1c)</span>
+<button class="text-blue-600 hover:text-blue-800 font-medium text-sm">Select file</button>
+</div>
+<!-- Modality Item 3 -->
+<div class="flex justify-between items-center border border-gray-300 bg-gray-50 rounded-md p-4">
+<span class="text-gray-800 font-medium">T2-weighted (.t2w)</span>
+<button class="text-blue-600 hover:text-blue-800 font-medium text-sm">Select file</button>
+</div>
+<!-- Modality Item 4 -->
+<div class="flex justify-between items-center border border-gray-300 bg-gray-50 rounded-md p-4">
+<span class="text-gray-800 font-medium">FLAIR (.t2f)</span>
+<button class="text-blue-600 hover:text-blue-800 font-medium text-sm">Select file</button>
+</div>
+</div>
+</section>
+<!-- END: MRI Modalities Card -->
+<!-- Action Button -->
+<button class="w-full bg-gray-200 text-gray-400 font-medium py-4 rounded-full text-center cursor-not-allowed uppercase tracking-wide">
+        Run AI Inference
+      </button>
+</div>
+</main>
+<!-- END: MainContent -->
+</body></html>
+
+<!-- Existing Patient Selection - NeuroSegment AI -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSegment AI - Clinical Diagnostics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-fonts">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc; /* light slate/blueish background */
+    }
+  </style>
+<style data-purpose="custom-forms">
+    /* Custom styling for the select to match the outline style in the image */
+    .custom-select-wrapper {
+      position: relative;
+      margin-top: 1.5rem;
+    }
+    .custom-select-label {
+      position: absolute;
+      top: -0.6rem;
+      left: 0.75rem;
+      background-color: white;
+      padding: 0 0.25rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      z-index: 10;
+    }
+    .custom-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 1px solid #94a3b8;
+      border-radius: 0.375rem;
+      background-color: white;
+      font-size: 1rem;
+      color: #334155;
+      cursor: pointer;
+    }
+    .custom-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+    .custom-select-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #475569;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased h-screen flex flex-col">
+<!-- BEGIN: Application Header -->
+<header class="bg-white border-b border-slate-200">
+<!-- Window Controls Bar (Mockup) -->
+<div class="flex items-center justify-between px-3 py-1 bg-slate-100 border-b border-slate-200 text-xs text-slate-600">
+<div class="flex items-center gap-2">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<rect height="14" rx="2" ry="2" width="20" x="2" y="3"></rect>
+<line x1="8" x2="16" y1="21" y2="21"></line>
+<line x1="12" x2="12" y1="17" y2="21"></line>
+</svg>
+<span>NeuroSegment AI - Clinical Diagnostics</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-200 p-1 rounded"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M20 12H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="hover:bg-slate-200 p-1 rounded"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="hover:bg-red-500 hover:text-white p-1 rounded"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+</div>
+<!-- Main Navigation Bar -->
+<nav class="flex items-center px-6 py-3 gap-8">
+<div class="flex items-center gap-2">
+<h1 class="text-xl font-bold text-blue-800 tracking-tight">NeuroSegment AI</h1>
+</div>
+<div class="flex items-center gap-2">
+<a class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-md transition-colors" href="#">Patient Archive</a>
+<a class="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-md transition-colors" href="#">Segmentation</a>
+</div>
+</nav>
+</header>
+<!-- END: Application Header -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-grow flex items-start justify-center pt-10 pb-8 px-4 overflow-y-auto">
+<div class="w-full max-w-[600px] flex flex-col gap-6">
+<!-- BEGIN: Patient Information Card -->
+<section aria-labelledby="patient-info-title" class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+<h2 class="text-lg font-bold text-slate-900 mb-6" id="patient-info-title">Patient Information</h2>
+<!-- Radio Button Group -->
+<div class="flex items-center gap-8 mb-6">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center justify-center w-5 h-5">
+<input class="peer sr-only" name="patient_type" type="radio" value="new"/>
+<div class="w-5 h-5 rounded-full border-2 border-slate-400 peer-checked:border-blue-600 group-hover:border-blue-500 transition-colors"></div>
+<div class="absolute w-2.5 h-2.5 rounded-full bg-blue-600 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-700 text-sm font-medium">New Patient</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative flex items-center justify-center w-5 h-5">
+<input checked="" class="peer sr-only" name="patient_type" type="radio" value="existing"/>
+<div class="w-5 h-5 rounded-full border-2 border-slate-400 peer-checked:border-blue-600 group-hover:border-blue-500 transition-colors"></div>
+<div class="absolute w-2.5 h-2.5 rounded-full bg-blue-600 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-700 text-sm font-medium">Existing Patient</span>
+</label>
+</div>
+<!-- Select Patient Dropdown -->
+<div class="custom-select-wrapper">
+<label class="custom-select-label" for="patient_select">Select Patient *</label>
+<select class="custom-select" id="patient_select">
+<option disabled="" selected="" value="">Select Patient</option>
+<option value="p1">John Doe (ID: 10452)</option>
+<option value="p2">Jane Smith (ID: 10453)</option>
+<option value="p3">Robert Johnson (ID: 10454)</option>
+</select>
+<div class="custom-select-icon">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</section>
+<!-- END: Patient Information Card -->
+<!-- BEGIN: MRI Modalities Card -->
+<section aria-labelledby="mri-modalities-title" class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+<h2 class="text-lg font-bold text-slate-900 mb-4" id="mri-modalities-title">MRI Modalities</h2>
+<div class="flex flex-col gap-3">
+<!-- Modality Item 1 -->
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 border border-slate-200">
+<span class="text-sm font-medium text-slate-800">T1-weighted (.t1n)</span>
+<button class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors" type="button">Select file</button>
+</div>
+<!-- Modality Item 2 -->
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 border border-slate-200">
+<span class="text-sm font-medium text-slate-800">T1Gd — Contrast (.t1c)</span>
+<button class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors" type="button">Select file</button>
+</div>
+<!-- Modality Item 3 -->
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 border border-slate-200">
+<span class="text-sm font-medium text-slate-800">T2-weighted (.t2w)</span>
+<button class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors" type="button">Select file</button>
+</div>
+<!-- Modality Item 4 -->
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 border border-slate-200">
+<span class="text-sm font-medium text-slate-800">FLAIR (.t2f)</span>
+<button class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors" type="button">Select file</button>
+</div>
+</div>
+</section>
+<!-- END: MRI Modalities Card -->
+<!-- BEGIN: Action Button -->
+<div class="pt-2">
+<button class="w-full py-4 px-6 bg-slate-200 text-slate-400 font-medium rounded-full text-base cursor-not-allowed transition-colors" disabled="" type="button">
+          Run AI Inference
+        </button>
+</div>
+<!-- END: Action Button -->
+</div>
+</main>
+<!-- END: Main Content Area -->
+</body></html>
+
+<!-- Patient Archive View - NeuroSegment AI -->
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSegment AI - Patient Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-fonts">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc; /* Very light slate background */
+    }
+  </style>
+<style data-purpose="custom-utilities">
+    /* Custom utility for the specific blue color used in the design */
+    .bg-brand-blue { background-color: #0d6efd; }
+    .text-brand-blue { color: #0d6efd; }
+    .border-brand-blue { border-color: #0d6efd; }
+    
+    /* Custom utility for the red delete button */
+    .bg-brand-red { background-color: #dc3545; }
+    .text-brand-red { color: #dc3545; }
+    
+    /* Custom scrollbar for sidebar */
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased h-screen flex flex-col overflow-hidden">
+<!-- BEGIN: Top Navigation Bar -->
+<header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shrink-0 shadow-sm relative z-10" data-purpose="main-header">
+<div class="flex items-center space-x-8">
+<!-- Logo / Brand -->
+<div class="flex items-center space-x-2">
+<span class="text-xl font-bold text-slate-800 tracking-tight">NeuroSegment <span class="text-brand-blue">AI</span></span>
+</div>
+<!-- Main Navigation Tabs -->
+<nav aria-label="Main Navigation" class="flex items-center space-x-2">
+<a aria-current="page" class="px-4 py-2 rounded-md bg-blue-100 text-blue-800 font-semibold text-sm transition-colors" href="#">Patient Archive</a>
+<a class="px-4 py-2 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-medium text-sm transition-colors" href="#">Segmentation</a>
+</nav>
+</div>
+<!-- Actions -->
+<div>
+<button class="bg-brand-blue hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold text-sm shadow-sm transition-colors flex items-center space-x-1">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>New Analysis</span>
+</button>
+</div>
+</header>
+<!-- END: Top Navigation Bar -->
+<!-- BEGIN: Main Content Area (Sidebar + Detail View) -->
+<div class="flex flex-1 overflow-hidden">
+<!-- BEGIN: Left Sidebar (Patient List) -->
+<aside class="w-80 bg-white border-r border-slate-200 flex flex-col shrink-0" data-purpose="patient-sidebar">
+<!-- Sidebar Header -->
+<div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+<h2 class="text-lg font-bold text-slate-800">Patients</h2>
+<button class="text-sm font-medium text-brand-blue hover:text-blue-800 transition-colors">Refresh</button>
+</div>
+<!-- Search Input -->
+<div class="p-4 border-b border-slate-100">
+<div class="relative">
+<input class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent placeholder-slate-400 transition-shadow" placeholder="Search by name..." type="text"/>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+<svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Patient List Scrollable Area -->
+<div class="flex-1 overflow-y-auto sidebar-scroll p-4 space-y-2">
+<!-- Active Patient Item -->
+<button class="w-full text-left p-4 rounded-lg bg-brand-blue text-white shadow-sm border border-transparent transition-all">
+<div class="font-bold text-base mb-1">fff, fff</div>
+<div class="text-xs text-blue-100 flex items-center space-x-2">
+<span>DOB: 2000-08-08</span>
+<span class="w-1 h-1 bg-blue-300 rounded-full"></span>
+<span>Scans: 4</span>
+</div>
+</button>
+<!-- Inactive Patient Item -->
+<button class="w-full text-left p-4 rounded-lg bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-700">
+<div class="font-bold text-base mb-1">Debug, InferTest</div>
+<div class="text-xs text-slate-500 flex items-center space-x-2">
+<span>DOB: 2000-01-01</span>
+<span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+<span>Scans: 3</span>
+</div>
+</button>
+</div>
+</aside>
+<!-- END: Left Sidebar -->
+<!-- BEGIN: Main Detail View -->
+<main class="flex-1 overflow-y-auto bg-[#f8fafc] p-8" data-purpose="patient-detail-view">
+<div class="max-w-6xl mx-auto">
+<!-- BEGIN: Patient Header Information -->
+<section class="mb-8" data-purpose="patient-header">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 mb-2">FFF, fff</h1>
+<p class="text-slate-500 text-sm font-medium">ID: MRN-2 • DOB: 2000-08-08</p>
+</div>
+<button class="bg-brand-red hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-sm transition-colors">
+              Delete Patient
+            </button>
+</div>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Stat Card 1 -->
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Total Scans</h3>
+<p class="text-2xl font-bold text-slate-800">4</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">First Scan</h3>
+<p class="text-2xl font-bold text-slate-800">2026-05-09</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Latest Scan</h3>
+<p class="text-2xl font-bold text-slate-800">2026-05-09</p>
+</div>
+</div>
+</section>
+<!-- END: Patient Header Information -->
+<!-- BEGIN: Segmentation Archive Grid -->
+<section data-purpose="segmentation-archive">
+<div class="border-b border-slate-300 pb-2 mb-6">
+<h2 class="text-xl font-bold text-slate-800">Segmentation Archive</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Scan Card 1 -->
+<article class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+<!-- Thumbnail Placeholder -->
+<div class="h-40 bg-[#1e2336] relative flex items-center justify-center">
+<!-- Status Badge -->
+<div class="absolute top-3 right-3 bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
+                  Completed
+                </div>
+<!-- Abstract Brain/Scan Representation -->
+<div class="w-24 h-full bg-[#6a6c6a] flex items-center justify-center">
+<div class="w-10 h-10 bg-slate-300 rounded-full"></div>
+</div>
+</div>
+<!-- Card Details -->
+<div class="p-4 flex flex-col flex-1">
+<div class="mb-4">
+<h4 class="font-semibold text-slate-800 text-sm">2026-05-09 09:03</h4>
+<p class="text-slate-500 text-sm">Tumor: 12.57 cm³</p>
+</div>
+<!-- Card Actions -->
+<div class="mt-auto pt-2">
+<button class="text-brand-red text-sm font-semibold hover:underline">Delete</button>
+</div>
+</div>
+</article>
+<!-- Scan Card 2 -->
+<article class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+<div class="h-40 bg-[#1e2336] relative flex items-center justify-center">
+<div class="absolute top-3 right-3 bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
+                  Completed
+                </div>
+<div class="w-24 h-full bg-[#6a6c6a] flex items-center justify-center">
+<div class="w-10 h-10 bg-slate-300 rounded-full"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="mb-4">
+<h4 class="font-semibold text-slate-800 text-sm">2026-05-09 08:59</h4>
+<p class="text-slate-500 text-sm">Tumor: 32.75 cm³</p>
+</div>
+<div class="mt-auto pt-2">
+<button class="text-brand-red text-sm font-semibold hover:underline">Delete</button>
+</div>
+</div>
+</article>
+<!-- Scan Card 3 -->
+<article class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+<div class="h-40 bg-[#1e2336] relative flex items-center justify-center">
+<div class="absolute top-3 right-3 bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
+                  Completed
+                </div>
+<div class="w-24 h-full bg-[#6a6c6a] flex items-center justify-center">
+<div class="w-10 h-10 bg-slate-300 rounded-full"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="mb-4">
+<h4 class="font-semibold text-slate-800 text-sm">2026-05-09 08:58</h4>
+<p class="text-slate-500 text-sm">Tumor: 7.00 cm³</p>
+</div>
+<div class="mt-auto pt-2">
+<button class="text-brand-red text-sm font-semibold hover:underline">Delete</button>
+</div>
+</div>
+</article>
+<!-- Scan Card 4 -->
+<article class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+<div class="h-40 bg-[#1e2336] relative flex items-center justify-center">
+<div class="absolute top-3 right-3 bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
+                  Completed
+                </div>
+<div class="w-24 h-full bg-[#6a6c6a] flex items-center justify-center">
+<div class="w-10 h-10 bg-slate-300 rounded-full"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<div class="mb-4">
+<h4 class="font-semibold text-slate-800 text-sm">2026-05-09 07:58</h4>
+<p class="text-slate-500 text-sm">Tumor: 37.78 cm³</p>
+</div>
+<div class="mt-auto pt-2">
+<button class="text-brand-red text-sm font-semibold hover:underline">Delete</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: Segmentation Archive Grid -->
+</div>
+</main>
+<!-- END: Main Detail View -->
+</div>
+<!-- END: Main Content Area -->
+</body></html>
