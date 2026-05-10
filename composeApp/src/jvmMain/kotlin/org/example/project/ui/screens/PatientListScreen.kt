@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import org.example.project.data.ApiClient
 import org.example.project.data.Patient
 import org.example.project.data.Scan
@@ -212,12 +213,55 @@ fun PatientListScreen(
                     StatCard("Latest Scan", latestScan, Modifier.weight(1f))
                 }
 
+                // Progression Block
+                val sortedScans = patient.scans.sortedBy { it.upload_date }
+                val progressionText = if (sortedScans.size >= 2) {
+                    val latest = sortedScans.last()
+                    val previous = sortedScans[sortedScans.size - 2]
+                    val latestVol = latest.tumor_volume_cm3 ?: 0.0
+                    val prevVol = previous.tumor_volume_cm3 ?: 0.0
+                    val diff = latestVol - prevVol
+                    val percent = if (prevVol > 0) (diff / prevVol) * 100 else 0.0
+                    
+                    val direction = if (diff > 0) "збільшився" else if (diff < 0) "зменшився" else "стабільний"
+                    
+                    val absDiff = if (diff < 0) -diff else diff
+                    val absPercent = if (percent < 0) -percent else percent
+                    
+                    if (diff == 0.0) {
+                        "Стан стабільний. Об'єм пухлини не змінився порівняно з попереднім обстеженням від ${previous.upload_date.take(10)}."
+                    } else {
+                        "Об'єм пухлини $direction на ${String.format("%.2f", absDiff)} cm³ (${String.format("%.1f", absPercent)}%) порівняно з попереднім обстеженням від ${previous.upload_date.take(10)}."
+                    }
+                } else {
+                    "Це перше обстеження пацієнта. Динаміка буде доступна після наступних сканувань."
+                }
+
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(8.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = progressionText,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+
                 // Segmentation Archive Title
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     Text(
                         "Segmentation Archive",
                         style = MaterialTheme.typography.titleMedium,
@@ -288,7 +332,24 @@ fun StatCard(title: String, value: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun ScanCard(scan: Scan, onClick: () -> Unit, onDelete: () -> Unit) {
-    val previewImage: ImageBitmap? = null // Mock: no image loaded
+    var previewImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    
+    LaunchedEffect(scan.id) {
+        withContext(Dispatchers.IO) {
+            try {
+                // Fetch middle slice (around 77 for BraTS)
+                val bytes = ApiClient.getScanSlice(scan.id, 77)
+                if (bytes != null) {
+                    val bitmap = org.jetbrains.skia.Image.makeFromEncoded(bytes).toComposeImageBitmap()
+                    withContext(Dispatchers.Main) {
+                        previewImage = bitmap
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     Surface(
         color = MaterialTheme.colorScheme.surface,
@@ -302,12 +363,13 @@ fun ScanCard(scan: Scan, onClick: () -> Unit, onDelete: () -> Unit) {
             ) {
                 if (previewImage != null) {
                     androidx.compose.foundation.Image(
-                        bitmap = previewImage,
+                        bitmap = previewImage!!,
                         contentDescription = "Scan preview",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Fit
                     )
                 }
+
                 // Status badge
                 Surface(
                     color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
