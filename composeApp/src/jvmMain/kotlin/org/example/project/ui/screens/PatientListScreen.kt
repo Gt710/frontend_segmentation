@@ -86,28 +86,29 @@ fun PatientListScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Patients",
+                    "Пацієнти",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
                 TextButton(onClick = { fetchPatients() }) {
-                    Text("Refresh", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    Text("Оновити", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                 }
             }
 
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                placeholder = { Text("Search by name...") },
+                placeholder = { Text("Пошук за ім'ям...") },
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 singleLine = true
             )
 
+
             if (isLoading) {
                 CircularProgressIndicator()
             } else if (filteredPatients.isEmpty()) {
-                Text("No patients found.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("Пацієнтів не знайдено.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     lazyItems(filteredPatients) { patient ->
@@ -129,7 +130,7 @@ fun PatientListScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    "DOB: ${patient.dob.take(10)} • Scans: ${patient.scans.size}",
+                                    "Дата нар.: ${patient.dob.take(10)} • Сканувань: ${patient.scans.size}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -158,10 +159,11 @@ fun PatientListScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "ID: MRN-${patient.id} • DOB: ${patient.dob.take(10)}",
+                            text = "ID: MRN-${patient.id} • Дата нар.: ${patient.dob.take(10)} • Тел.: ${patient.phone ?: "Немає"}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+
                     }
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -196,7 +198,7 @@ fun PatientListScreen(
                             modifier = Modifier.height(32.dp),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
                         ) {
-                            Text("Delete Patient", style = MaterialTheme.typography.labelSmall)
+                            Text("Видалити пацієнта", style = MaterialTheme.typography.labelSmall)
                         }
                     }
                 }
@@ -206,11 +208,12 @@ fun PatientListScreen(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    StatCard("Total Scans", patient.scans.size.toString(), Modifier.weight(1f))
+                    StatCard("Всього сканувань", patient.scans.size.toString(), Modifier.weight(1f))
                     val firstScan = patient.scans.minByOrNull { it.upload_date }?.upload_date?.take(10) ?: "N/A"
                     val latestScan = patient.scans.maxByOrNull { it.upload_date }?.upload_date?.take(10) ?: "N/A"
-                    StatCard("First Scan", firstScan, Modifier.weight(1f))
-                    StatCard("Latest Scan", latestScan, Modifier.weight(1f))
+                    StatCard("Перше сканування", firstScan, Modifier.weight(1f))
+                    StatCard("Останнє сканування", latestScan, Modifier.weight(1f))
+
                 }
 
                 // Progression Block
@@ -273,7 +276,7 @@ fun PatientListScreen(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, modifier = Modifier.padding(bottom = 12.dp))
 
                 if (patient.scans.isEmpty()) {
-                    Text("No scans found. Click '+ New Analysis' to upload MRI data.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Сканувань не знайдено. Натисніть '+ Новий аналіз', щоб завантажити дані МРТ.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 } else {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
@@ -377,7 +380,11 @@ fun ScanCard(scan: Scan, onClick: () -> Unit, onDelete: () -> Unit) {
                     modifier = Modifier.align(Alignment.TopEnd).padding(6.dp)
                 ) {
                     Text(
-                        scan.status.uppercase(),
+                        when (scan.status) {
+                            "completed" -> "ГОТОВО"
+                            "failed" -> "ПОМИЛКА"
+                            else -> scan.status.uppercase()
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         color = when (scan.status) {
                             "completed" -> Color(0xFF22C55E)
@@ -396,7 +403,7 @@ fun ScanCard(scan: Scan, onClick: () -> Unit, onDelete: () -> Unit) {
                 )
                 if (scan.tumor_volume_cm3 != null) {
                     Text(
-                        "Tumor: ${String.format("%.2f", scan.tumor_volume_cm3)} cm³",
+                        "Пухлина: ${String.format("%.2f", scan.tumor_volume_cm3)} см³",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -407,8 +414,9 @@ fun ScanCard(scan: Scan, onClick: () -> Unit, onDelete: () -> Unit) {
                     modifier = Modifier.padding(top = 4.dp),
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete", style = MaterialTheme.typography.labelSmall)
+                    Text("Видалити", style = MaterialTheme.typography.labelSmall)
                 }
+
             }
         }
     }

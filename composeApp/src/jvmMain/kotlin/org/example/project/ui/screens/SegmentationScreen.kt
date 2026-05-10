@@ -95,7 +95,7 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        "Patient Information",
+                        "Інформація про пацієнта",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -109,12 +109,13 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { mode = PatientMode.NEW }) {
                             RadioButton(selected = mode == PatientMode.NEW, onClick = { mode = PatientMode.NEW })
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("New Patient", style = MaterialTheme.typography.bodyMedium)
+                            Text("Новий пацієнт", style = MaterialTheme.typography.bodyMedium)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { mode = PatientMode.EXISTING }) {
                             RadioButton(selected = mode == PatientMode.EXISTING, onClick = { mode = PatientMode.EXISTING })
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Existing Patient", style = MaterialTheme.typography.bodyMedium)
+                            Text("Існуючий пацієнт", style = MaterialTheme.typography.bodyMedium)
+
                         }
                     }
 
@@ -122,32 +123,35 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             OutlinedTextField(
                                 value = lastName, onValueChange = { lastName = it },
-                                label = { Text("Last Name *") },
+                                label = { Text("Прізвище *") },
                                 modifier = Modifier.weight(1f), singleLine = true
                             )
                             OutlinedTextField(
                                 value = firstName, onValueChange = { firstName = it },
-                                label = { Text("First Name *") },
+                                label = { Text("Ім'я *") },
                                 modifier = Modifier.weight(1f), singleLine = true
                             )
+
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             OutlinedTextField(
                                 value = dob, onValueChange = { dob = it },
-                                label = { Text("Date of Birth * (YYYY-MM-DD)") },
+                                label = { Text("РРРР-ММ-ДД*") },
                                 modifier = Modifier.weight(1f), singleLine = true
                             )
                             OutlinedTextField(
                                 value = phone, onValueChange = { phone = it },
-                                label = { Text("Phone") },
+                                label = { Text("Телефон") },
                                 modifier = Modifier.weight(1f), singleLine = true
                             )
+
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
                             value = notes, onValueChange = { notes = it },
-                            label = { Text("Clinical Notes") },
+                            label = { Text("Клінічні нотатки") },
+
                             modifier = Modifier.fillMaxWidth(), minLines = 2, maxLines = 3
                         )
                     } else {
@@ -157,10 +161,11 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                             val density = LocalDensity.current
                             
                             OutlinedTextField(
-                                value = selectedPatient?.let { "${it.last_name}, ${it.first_name} (ID: ${it.id})" } ?: "Select Patient",
+                                value = selectedPatient?.let { "${it.last_name}, ${it.first_name} (ID: ${it.id})" } ?: "Виберіть пацієнта",
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("Select Patient *") },
+                                label = { Text("Виберіть пацієнта *") },
+
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .onGloballyPositioned { coordinates ->
@@ -187,7 +192,8 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
 
                                 if (patientsList.isEmpty()) {
                                     DropdownMenuItem(
-                                        text = { Text("No patients found") },
+                                        text = { Text("Пацієнтів не знайдено") },
+
                                         onClick = { dropdownExpanded = false }
                                     )
                                 } else {
@@ -226,7 +232,9 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                         ModalityZone("T1Gd — Contrast (.t1c)", t1cFile) { selectFile { t1cFile = it } }
                         ModalityZone("T2-weighted (.t2w)", t2File) { selectFile { t2File = it } }
                         ModalityZone("FLAIR (.t2f)", flairFile) { selectFile { flairFile = it } }
+
                     }
+
                 }
             }
 
@@ -242,33 +250,35 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
             Button(
                 onClick = {
                     if (mode == PatientMode.NEW && !formFilled) {
-                        errorMessage = "Please fill required patient fields"
+                        errorMessage = "Будь ласка, заповніть обов'язкові поля пацієнта"
                         return@Button
                     }
                     if (mode == PatientMode.EXISTING && selectedPatient == null) {
-                        errorMessage = "Please select a patient"
+                        errorMessage = "Будь ласка, виберіть пацієнта"
                         return@Button
                     }
                     if (!allFilesSelected) {
-                        errorMessage = "Please select all 4 MRI modality files"
+                        errorMessage = "Будь ласка, виберіть усі 4 файли модальностей МРТ"
                         return@Button
                     }
                     errorMessage = null
                     isProcessing = true
-                    statusMessage = "Uploading MRI scans..."
+                    statusMessage = "Завантаження знімків МРТ..."
+
 
                     coroutineScope.launch(Dispatchers.IO) {
                         try {
                             val patientId = if (mode == PatientMode.NEW) {
-                                withContext(Dispatchers.Main) { statusMessage = "Creating patient..." }
-                                val id = ApiClient.createPatient(firstName, lastName, dob, notes)
-                                if (id == 0) throw Exception("Failed to create patient")
+                                withContext(Dispatchers.Main) { statusMessage = "Створення пацієнта..." }
+                                val id = ApiClient.createPatient(firstName, lastName, dob, phone, notes)
+
+                                if (id == 0) throw Exception("Не вдалося створити пацієнта")
                                 id
                             } else {
                                 selectedPatient!!.id
                             }
 
-                            withContext(Dispatchers.Main) { statusMessage = "Uploading and analyzing MRI scans..." }
+                            withContext(Dispatchers.Main) { statusMessage = "Завантаження та аналіз знімків МРТ..." }
                             
                             val filePaths = listOfNotNull(
                                 t1File?.absolutePath,
@@ -280,12 +290,13 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                             val responseJson = ApiClient.uploadPatientScans(patientId, filePaths)
                             
                             if (responseJson.contains("\"status\": \"error\"") || responseJson.contains("\"detail\"")) {
-                                throw Exception("Analysis failed: $responseJson")
+                                throw Exception("Аналіз не вдався: $responseJson")
                             }
                             
                             // Parse scan ID from response
                             val scanIdMatch = """"id"\s*:\s*(\d+)""".toRegex().find(responseJson.substringAfter("\"scans\""))
-                            val scanId = scanIdMatch?.groupValues?.get(1)?.toInt() ?: throw Exception("Failed to parse scan ID from response")
+                            val scanId = scanIdMatch?.groupValues?.get(1)?.toInt() ?: throw Exception("Не вдалося отримати ID сканування з відповіді")
+
 
 
                             withContext(Dispatchers.Main) {
@@ -309,11 +320,12 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                 if (isProcessing) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text("Processing...")
+                    Text("Обробка...")
                 } else {
-                    Text("Run AI Inference", style = MaterialTheme.typography.titleSmall)
+                    Text("Запустити ШІ аналіз", style = MaterialTheme.typography.titleSmall)
                 }
             }
+
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -335,7 +347,8 @@ fun ModalityZone(title: String, file: File?, onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
-                Text("Select file", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Text("Вибрати файл", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+
             }
         }
     } else {

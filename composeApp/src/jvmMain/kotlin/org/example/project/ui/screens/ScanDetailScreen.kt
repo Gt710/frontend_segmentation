@@ -83,8 +83,9 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         TextButton(onClick = onBack, modifier = Modifier.padding(bottom = 4.dp)) {
-            Text("← Back to Patient Archive")
+            Text("← Назад до архіву пацієнтів")
         }
+
 
         Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             // ─── Left: MRI Viewer with Slider ───
@@ -105,8 +106,9 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Axial View", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
-                        Text("Scan #$scanId • Slice ${currentSlice + 1} / $totalSlices", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Аксіальний зріз", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
+                        Text("Сканування №$scanId • Зріз ${currentSlice + 1} / $totalSlices", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+
                     }
 
                     // Image
@@ -124,7 +126,8 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                                 contentScale = ContentScale.Fit
                             )
                         } else {
-                            Text("No image available for this slice", color = Color.Gray, style = MaterialTheme.typography.bodyMedium)
+                            Text("Зображення для цього зрізу недоступне", color = Color.Gray, style = MaterialTheme.typography.bodyMedium)
+
                         }
                     }
 
@@ -138,8 +141,8 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text("Slice: ${currentSlice + 1}", style = MaterialTheme.typography.labelSmall)
-                                Text("Total: $totalSlices", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("Зріз: ${currentSlice + 1}", style = MaterialTheme.typography.labelSmall)
+                                Text("Всього: $totalSlices", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             Slider(
                                 value = currentSlice.toFloat(),
@@ -159,19 +162,19 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // Status
-                CompactCard("Analysis Status") {
-                    Text("Model: U-Net 3D\nStatus: Completed\nNature: $tumorNature", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                CompactCard("Статус аналізу") {
+                    Text("Модель: U-Net 3D\nСтатус: Завершено\nХарактер: $tumorNature", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
 
                 // Volumetric Metrics
-                CompactCard("Volumetric Metrics") {
+                CompactCard("Волюметричні метрики") {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        MetricLine("Tumor Volume", "$tumorVolume cm³", Color(0xFFEF4444))
+                        MetricLine("Об'єм пухлини", "$tumorVolume см³", Color(0xFFEF4444))
                     }
                 }
 
                 // Conclusion
-                CompactCard("Conclusion", modifier = Modifier.weight(1f)) {
+                CompactCard("Висновок", modifier = Modifier.weight(1f)) {
                     Text(
                         text = conclusion,
                         style = MaterialTheme.typography.bodyMedium,
@@ -200,7 +203,7 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth().height(44.dp)
                 ) {
-                    Text("Export Report (PDF)")
+                    Text("Експортувати звіт (PDF)")
                 }
             }
         }

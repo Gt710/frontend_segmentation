@@ -91,16 +91,17 @@ fun TopNavBar(currentScreen: AppScreen, onNavigate: (AppScreen) -> Unit) {
                 modifier = Modifier.padding(end = 24.dp)
             )
 
-            NavTab("Patient Archive", currentScreen == AppScreen.PatientList || currentScreen == AppScreen.ScanDetail) { onNavigate(AppScreen.PatientList) }
-            NavTab("Segmentation", currentScreen == AppScreen.Segmentation) { onNavigate(AppScreen.Segmentation) }
+            NavTab("Архів пацієнтів", currentScreen == AppScreen.PatientList || currentScreen == AppScreen.ScanDetail) { onNavigate(AppScreen.PatientList) }
+            NavTab("Сегментація", currentScreen == AppScreen.Segmentation) { onNavigate(AppScreen.Segmentation) }
 
             Spacer(modifier = Modifier.weight(1f))
 
             if (currentScreen == AppScreen.PatientList) {
                 Button(onClick = { onNavigate(AppScreen.Segmentation) }) {
-                    Text("+ New Analysis")
+                    Text("+ Новий аналіз")
                 }
             }
+
         }
     }
 }

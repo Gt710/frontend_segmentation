@@ -35,12 +35,13 @@ object ApiClient {
     }
 
 
-    fun createPatient(firstName: String, lastName: String, dob: String, notes: String?): Int {
+    fun createPatient(firstName: String, lastName: String, dob: String, phone: String, notes: String?): Int {
         val encodedFirstName = URLEncoder.encode(firstName, StandardCharsets.UTF_8.toString())
         val encodedLastName = URLEncoder.encode(lastName, StandardCharsets.UTF_8.toString())
         val encodedDob = URLEncoder.encode(dob, StandardCharsets.UTF_8.toString())
-        val encodedPhone = URLEncoder.encode("+123456789", StandardCharsets.UTF_8.toString()) // Hardcoded phone
+        val encodedPhone = URLEncoder.encode(phone, StandardCharsets.UTF_8.toString())
         val encodedNotes = notes?.let { URLEncoder.encode(it, StandardCharsets.UTF_8.toString()) } ?: ""
+
 
         val url = "$BASE_URL/patients?first_name=$encodedFirstName&last_name=$encodedLastName&dob=$encodedDob&phone=$encodedPhone&notes=$encodedNotes"
         
