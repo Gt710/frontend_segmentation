@@ -10,21 +10,76 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.example.project.data.ApiClient
+import org.jetbrains.skia.Image as SkiaImage
+import java.io.File
 
 @Composable
 fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
-    val resultImage: ImageBitmap? = null // Mock: no image
-    val tumorVolume = "15.42"
-    val conclusion = "Conclusion: Detected a moderate-sized lesion with volume 15.42 cm³.\n\nRecommendation: Consultation with a neurosurgeon."
-    val isLoading = false
-    var currentSlice by remember { mutableStateOf(50) }
-    val totalSlices = 100
+    val coroutineScope = rememberCoroutineScope()
+    var resultImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+    var currentSlice by remember { mutableStateOf(75) } // Default to middle-ish
+    val totalSlices = 155 // BraTS standard
+    
+    var tumorVolume by remember { mutableStateOf("...") }
+    var conclusion by remember { mutableStateOf("Завантаження висновку...") }
+    var tumorNature by remember { mutableStateOf("...") }
+
+    // Fetch scan details on start
+    LaunchedEffect(scanId) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val json = ApiClient.getScanDetails(scanId)
+            if (!json.contains("\"status\": \"error\"")) {
+                val volMatch = """"tumor_volume_cm3"\s*:\s*([^,}]+)""".toRegex().find(json)
+                val concMatch = """"conclusion"\s*:\s*"([^"]+)"""".toRegex().find(json)
+                val natureMatch = """"tumor_nature"\s*:\s*"([^"]+)"""".toRegex().find(json)
+                
+                withContext(Dispatchers.Main) {
+                    tumorVolume = volMatch?.groupValues?.get(1)?.let { if(it == "null") "N/A" else "%.2f".format(it.toDouble()) } ?: "N/A"
+                    conclusion = concMatch?.groupValues?.get(1) ?: "Немає висновку"
+                    tumorNature = natureMatch?.groupValues?.get(1) ?: "Невідомо"
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    conclusion = "Не вдалося завантажити деталі сканування"
+                }
+            }
+        }
+    }
+    
+    // Fetch slice image when currentSlice or scanId changes
+    LaunchedEffect(scanId, currentSlice) {
+        isLoading = true
+        coroutineScope.launch(Dispatchers.IO) {
+            val bytes = ApiClient.getScanSlice(scanId, currentSlice)
+            if (bytes != null) {
+                try {
+                    val skiaImage = SkiaImage.makeFromEncoded(bytes)
+                    val bitmap = skiaImage.toComposeImageBitmap()
+                    withContext(Dispatchers.Main) {
+                        resultImage = bitmap
+                        isLoading = false
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) { isLoading = false }
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    resultImage = null
+                    isLoading = false
+                }
+            }
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TextButton(onClick = onBack, modifier = Modifier.padding(bottom = 4.dp)) {
@@ -59,15 +114,17 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
                         modifier = Modifier.fillMaxWidth().weight(1f).background(Color.Black),
                         contentAlignment = Alignment.Center
                     ) {
-                        if (resultImage != null) {
+                        if (isLoading) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        } else if (resultImage != null) {
                             Image(
-                                bitmap = resultImage,
+                                bitmap = resultImage!!,
                                 contentDescription = "MRI Slice $currentSlice",
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
                         } else {
-                            Text("MRI Slice Preview (Mock)", color = Color.Gray, style = MaterialTheme.typography.bodyMedium)
+                            Text("No image available for this slice", color = Color.Gray, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
 
@@ -103,7 +160,7 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
             ) {
                 // Status
                 CompactCard("Analysis Status") {
-                    Text("Model: U-Net 3D\nStatus: Completed", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Model: U-Net 3D\nStatus: Completed\nNature: $tumorNature", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
 
                 // Volumetric Metrics
@@ -124,7 +181,23 @@ fun ScanDetailScreen(scanId: Int, onBack: () -> Unit) {
 
                 // Export Report
                 Button(
-                    onClick = { /* Do nothing */ },
+                    onClick = {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            val bytes = ApiClient.getScanReport(scanId)
+                            if (bytes != null) {
+                                try {
+                                    val file = File("report_scan_$scanId.pdf")
+                                    file.writeBytes(bytes)
+                                    // Open file with default system viewer
+                                    if (java.awt.Desktop.isDesktopSupported()) {
+                                        java.awt.Desktop.getDesktop().open(file)
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth().height(44.dp)
                 ) {
                     Text("Export Report (PDF)")

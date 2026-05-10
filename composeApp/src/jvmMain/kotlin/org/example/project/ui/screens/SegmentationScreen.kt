@@ -259,17 +259,39 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
 
                     coroutineScope.launch(Dispatchers.IO) {
                         try {
-                            // Simulate upload
-                            delay(2000)
-                            withContext(Dispatchers.Main) { statusMessage = "Running AI inference... This may take a few minutes." }
-                            // Simulate processing
-                            delay(3000)
+                            val patientId = if (mode == PatientMode.NEW) {
+                                withContext(Dispatchers.Main) { statusMessage = "Creating patient..." }
+                                val id = ApiClient.createPatient(firstName, lastName, dob, notes)
+                                if (id == 0) throw Exception("Failed to create patient")
+                                id
+                            } else {
+                                selectedPatient!!.id
+                            }
+
+                            withContext(Dispatchers.Main) { statusMessage = "Uploading and analyzing MRI scans..." }
                             
+                            val filePaths = listOfNotNull(
+                                t1File?.absolutePath,
+                                t1cFile?.absolutePath,
+                                t2File?.absolutePath,
+                                flairFile?.absolutePath
+                            )
+                            
+                            val responseJson = ApiClient.uploadPatientScans(patientId, filePaths)
+                            
+                            if (responseJson.contains("\"status\": \"error\"") || responseJson.contains("\"detail\"")) {
+                                throw Exception("Analysis failed: $responseJson")
+                            }
+                            
+                            // Parse scan ID from response
+                            val scanIdMatch = """"id"\s*:\s*(\d+)""".toRegex().find(responseJson.substringAfter("\"scans\""))
+                            val scanId = scanIdMatch?.groupValues?.get(1)?.toInt() ?: throw Exception("Failed to parse scan ID from response")
+
+
                             withContext(Dispatchers.Main) {
                                 isProcessing = false
                                 statusMessage = ""
-                                // Create a mock scan for the patient or just navigate
-                                onComplete(1) // Mock scan ID
+                                onComplete(scanId)
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
@@ -280,6 +302,7 @@ fun SegmentationScreen(onComplete: (Int) -> Unit) {
                         }
                     }
                 },
+
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 enabled = canSubmit
             ) {
