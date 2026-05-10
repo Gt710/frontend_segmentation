@@ -54,10 +54,12 @@ fun PatientListScreen(
                     isLoading = false
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     isLoading = false
                 }
             }
+
         }
     }
 

@@ -186,37 +186,44 @@ object ApiClient {
     }
 
     private fun parsePatients(json: String): List<Patient> {
-
+        println("RAW JSON: $json")
         val list = mutableListOf<Patient>()
         
-        // Split by patient objects. Each patient starts with "id":
-        val patientParts = json.split("\"id\":").drop(1)
+        // Знаходимо всіх пацієнтів за допомогою регулярного виразу
+        val patientRegex = """\{"id"\s*:\s*(\d+)\s*,\s*"first_name"\s*:\s*"([^"]*)"\s*,\s*"last_name"\s*:\s*"([^"]*)"""".toRegex()
+        val matches = patientRegex.findAll(json).toList()
         
-        for (part in patientParts) {
-            if (!part.contains("\"first_name\"")) continue
-            val idMatch = """^(\d+)""".toRegex().find(part)
-
-            val id = idMatch?.groupValues?.get(1)?.toInt() ?: continue
+        for (i in matches.indices) {
+            val currentMatch = matches[i]
+            val nextMatch = if (i < matches.size - 1) matches[i+1] else null
             
-            val firstName = """"first_name"\s*:\s*"([^"]*)"""".toRegex().find(part)?.groupValues?.get(1) ?: ""
-            val lastName = """"last_name"\s*:\s*"([^"]*)"""".toRegex().find(part)?.groupValues?.get(1) ?: ""
-            val dob = """"dob"\s*:\s*"([^"]*)"""".toRegex().find(part)?.groupValues?.get(1) ?: ""
-            val phone = """"phone"\s*:\s*"([^"]*)"""".toRegex().find(part)?.groupValues?.get(1) ?: ""
-            val notes = """"notes"\s*:\s*"([^"]*)"""".toRegex().find(part)?.groupValues?.get(1)
+            val id = currentMatch.groupValues[1].toInt()
+            val firstName = currentMatch.groupValues[2]
+            val lastName = currentMatch.groupValues[3]
+            
+            // Витягуємо текст поточного пацієнта до початку наступного
+            val startIdx = currentMatch.range.first
+            val endIdx = nextMatch?.range?.first ?: json.length
+            val patientText = json.substring(startIdx, endIdx)
+            
+            val dob = """"dob"\s*:\s*"([^"]*)"""".toRegex().find(patientText)?.groupValues?.get(1) ?: ""
+            val phone = """"phone"\s*:\s*"([^"]*)"""".toRegex().find(patientText)?.groupValues?.get(1) ?: ""
+            val notes = """"notes"\s*:\s*"([^"]*)"""".toRegex().find(patientText)?.groupValues?.get(1)
             
             val scans = mutableListOf<Scan>()
-            val scansPart = part.substringAfter("\"scans\":[", "")
-            if (scansPart.isNotEmpty()) {
+            val scansPart = patientText.substringAfter("\"scans\":[", "")
+            if (scansPart.isNotEmpty() && scansPart != patientText) {
                 val scansContent = scansPart.substringBefore("]")
-                // Match scans non-greedily
-                val scanMatches = """\{"id":(\d+)[^}]*"status":"([^"]*)"[^}]*"upload_date":"([^"]*)"[^}]*"tumor_volume_cm3":([^,}]*)[^}]*"conclusion":"([^"]*)"\}""".toRegex().findAll(scansContent)
-                
-                for (scanMatch in scanMatches) {
-                    val scanId = scanMatch.groupValues[1].toInt()
-                    val status = scanMatch.groupValues[2]
-                    val uploadDate = scanMatch.groupValues[3]
-                    val tumorVolume = scanMatch.groupValues[4].let { if (it == "null") null else it.toDouble() }
-                    val conclusion = scanMatch.groupValues[5]
+                val scanParts = scansContent.split("},{")
+                for (sPart in scanParts) {
+                    val scanIdMatch = """"id"\s*:\s*(\d+)""".toRegex().find(sPart)
+                    val scanId = scanIdMatch?.groupValues?.get(1)?.toInt() ?: continue
+                    
+                    val status = """"status"\s*:\s*"([^"]*)"""".toRegex().find(sPart)?.groupValues?.get(1) ?: ""
+                    val uploadDate = """"upload_date"\s*:\s*"([^"]*)"""".toRegex().find(sPart)?.groupValues?.get(1) ?: ""
+                    val tumorVolume = """"tumor_volume_cm3"\s*:\s*([^,\}]+)""".toRegex().find(sPart)?.groupValues?.get(1)?.let { if(it == "null") null else it.toDouble() }
+                    val conclusion = """"conclusion"\s*:\s*"([^"]*)"""".toRegex().find(sPart)?.groupValues?.get(1) ?: ""
+                    
                     scans.add(Scan(scanId, id, status, uploadDate, tumorVolume, conclusion))
                 }
             }
@@ -225,5 +232,6 @@ object ApiClient {
         }
         return list
     }
+
 
 }
